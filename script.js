@@ -295,9 +295,9 @@ downloadBtn.addEventListener("click", function(){
 // COPY CAPTION
 // ======================
 
-copyBtn.addEventListener("click", async function(){
+copyBtn.addEventListener("click", async function () {
 
-const caption=`🎉 HALO, TEMAN BARU! 🎉
+const caption = `🎉 HALO, TEMAN BARU! 🎉
 
 Perkenalkan Nama Saya ___________
 
@@ -323,15 +323,15 @@ Mari memulai perjalanan baru di sekolah yang Unggul dalam Adab dan Ilmu.
 #GenerasiBerkarakter
 #SpandujuUnggulDalamAdabDanIlmu`;
 
-try{
+try {
 
-await navigator.clipboard.writeText(caption);
+    await navigator.clipboard.writeText(caption);
 
-alert("✅ Caption berhasil disalin.\n\nSilakan paste ke Instagram.");
+    alert("✅ Caption berhasil disalin.\n\nSilakan paste ke Instagram.");
 
-}catch(e){
+} catch (e) {
 
-alert("Browser tidak mengizinkan menyalin otomatis.");
+    alert("Browser tidak mengizinkan menyalin otomatis.");
 
 }
 
