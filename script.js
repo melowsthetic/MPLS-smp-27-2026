@@ -21,13 +21,18 @@ const exportCanvas = document.getElementById("exportCanvas");
 const ctx = exportCanvas.getContext("2d");
 
 const editor = document.querySelector(".editor");
+const zoomIn = document.getElementById("zoomIn");
+const zoomOut = document.getElementById("zoomOut");
 
+const rotateLeft = document.getElementById("rotateLeft");
+const rotateRight = document.getElementById("rotateRight");
 
 // ======================
 // PHOTO STATE
 // ======================
 
 let scale = 1;
+let rotation = 0;
 
 let posX = 0;
 
@@ -53,10 +58,11 @@ let photoHeight = 0;
 
 function updateTransform(){
 
-photo.style.transform=
-
-`translate(calc(-50% + ${posX}px), calc(-50% + ${posY}px))
-scale(${scale})`;
+photo.style.transform = `
+translate(calc(-50% + ${posX}px), calc(-50% + ${posY}px))
+scale(${scale})
+rotate(${rotation}deg)
+`;
 
 }
 
@@ -198,6 +204,40 @@ editor.addEventListener("wheel", function(e){
     updateTransform();
 
 });
+zoomIn.addEventListener("click",()=>{
+
+scale += 0.05;
+
+if(scale>8) scale=8;
+
+updateTransform();
+
+});
+
+zoomOut.addEventListener("click",()=>{
+
+scale -= 0.05;
+
+if(scale<0.15) scale=0.15;
+
+updateTransform();
+
+});
+rotateLeft.addEventListener("click",()=>{
+
+rotation -= 1;
+
+updateTransform();
+
+});
+
+rotateRight.addEventListener("click",()=>{
+
+rotation += 1;
+
+updateTransform();
+
+});
 // ======================
 // DOWNLOAD PNG
 // ======================
@@ -240,22 +280,31 @@ downloadBtn.addEventListener("click", function(){
 
     exportPhoto.onload = function(){
 
-        ctx.drawImage(
 
-            exportPhoto,
+    ctx.save();
 
-            drawX,
+    // Pindahkan titik putar ke tengah foto
+    ctx.translate(
+        drawX + drawWidth / 2,
+        drawY + drawHeight / 2
+    );
 
-            drawY,
+    // Rotasi sesuai preview
+    ctx.rotate(rotation * Math.PI / 180);
 
-            drawWidth,
+    // Gambar foto
+    ctx.drawImage(
+        exportPhoto,
+        -drawWidth / 2,
+        -drawHeight / 2,
+        drawWidth,
+        drawHeight
+    );
 
-            drawHeight
+    ctx.restore();
 
-        );
-
-        // Gambar frame di atas foto
-        const exportFrame = new Image();
+    // Gambar frame di atas foto
+    const exportFrame = new Image();
 
         exportFrame.onload = function(){
 
