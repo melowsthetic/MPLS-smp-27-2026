@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Twibbon MPLS SMPN 27 2026</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<img src="assets/logo.png" class="logo">
+
+<h1>MPLS SMP Negeri 27</h1>
+
+<p>Upload Foto Peserta</p>
+
+</div>
+
+
+<div class="editor">
+
+<img
+id="photo"
+src=""
+>
+
+<img
+id="frame"
+src="assets/twibbon.png"
+>
+
+<canvas id="exportCanvas" width="1280" height="1280" style="display:none;"></canvas>
+
+</div>
+
+
+<div class="toolbar">
+
+<button id="uploadBtn">
+
+📷 Pilih Foto
+
+</button>
+
+<button id="downloadBtn">
+
+💾 Download
+
+</button>
+
+</div>
+
+<input
+
+type="file"
+
+id="upload"
+
+accept="image/*"
+
+hidden>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
