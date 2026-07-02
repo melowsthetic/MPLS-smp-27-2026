@@ -65,25 +65,25 @@ scale(${scale})`;
 
 function autoFit(){
 
-const boxWidth = editor.clientWidth;
+    // ukuran area foto pada twibbon
+    const frameWidth = editor.clientWidth * 0.495;
+    const frameHeight = editor.clientHeight * 0.495;
 
-const boxHeight = editor.clientHeight;
+    // posisi tengah area foto
+    const frameCenterX = editor.clientWidth * 0.375;
+    const frameCenterY = editor.clientHeight * 0.505;
 
-const ratio = Math.max(
+    // hitung skala supaya foto memenuhi area
+    scale = Math.max(
+        frameWidth / photoWidth,
+        frameHeight / photoHeight
+    );
 
-boxWidth/photoWidth,
+    // geser otomatis ke tengah area foto
+    posX = frameCenterX - (editor.clientWidth / 2);
+    posY = frameCenterY - (editor.clientHeight / 2);
 
-boxHeight/photoHeight
-
-);
-
-scale = ratio;
-
-posX = 0;
-
-posY = 0;
-
-updateTransform();
+    updateTransform();
 
 }
 // ======================
