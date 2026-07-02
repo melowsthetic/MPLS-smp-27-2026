@@ -1,171 +1,291 @@
-const upload=document.getElementById("upload");
-const uploadBtn=document.getElementById("uploadBtn");
-const photo=document.getElementById("photo");
+// =====================================================
+// TWIBBON MPLS SMPN 27 BALIKPAPAN 2026
+// Version 2.1
+// By ChatGPT
+// =====================================================
 
-let scale=1;
-let posX=0;
-let posY=0;
+// ======================
+// ELEMENT
+// ======================
 
-let isDragging=false;
+const upload = document.getElementById("upload");
+const uploadBtn = document.getElementById("uploadBtn");
+const downloadBtn = document.getElementById("downloadBtn");
 
-let startX=0;
-let startY=0;
+const photo = document.getElementById("photo");
+const frame = document.getElementById("frame");
 
+const exportCanvas = document.getElementById("exportCanvas");
+const ctx = exportCanvas.getContext("2d");
 
-// Upload
-
-uploadBtn.onclick=()=>upload.click();
-
-upload.onchange=(e)=>{
-
-const file=e.target.files[0];
-
-if(!file)return;
-
-photo.src=URL.createObjectURL(file);
-
-photo.style.display="block";
-
-scale=1;
-posX=0;
-posY=0;
-
-updateTransform();
-
-}
+const editor = document.querySelector(".editor");
 
 
-// Update
+// ======================
+// PHOTO STATE
+// ======================
+
+let scale = 1;
+
+let posX = 0;
+
+let posY = 0;
+
+let startX = 0;
+
+let startY = 0;
+
+let dragging = false;
+
+
+// ukuran asli foto
+
+let photoWidth = 0;
+
+let photoHeight = 0;
+
+
+// ======================
+// UPDATE PREVIEW
+// ======================
 
 function updateTransform(){
 
 photo.style.transform=
-`translate(${posX}px,${posY}px)
- scale(${scale})`;
+
+`translate(calc(-50% + ${posX}px), calc(-50% + ${posY}px))
+scale(${scale})`;
 
 }
 
 
-// Mouse Drag
+// ======================
+// AUTO FIT
+// ======================
 
-photo.onmousedown=(e)=>{
+function autoFit(){
 
-isDragging=true;
+const boxWidth = editor.clientWidth;
 
-startX=e.clientX-posX;
+const boxHeight = editor.clientHeight;
 
-startY=e.clientY-posY;
+const ratio = Math.max(
 
-photo.style.cursor="grabbing";
+boxWidth/photoWidth,
 
-}
+boxHeight/photoHeight
 
-document.onmouseup=()=>{
+);
 
-isDragging=false;
+scale = ratio;
 
-photo.style.cursor="grab";
+posX = 0;
 
-}
-
-document.onmousemove=(e)=>{
-
-if(!isDragging)return;
-
-posX=e.clientX-startX;
-
-posY=e.clientY-startY;
+posY = 0;
 
 updateTransform();
 
 }
+// ======================
+// UPLOAD FOTO
+// ======================
+
+uploadBtn.addEventListener("click", () => {
+
+    upload.click();
+
+});
 
 
-// Zoom
+upload.addEventListener("change", function(e){
 
-photo.onwheel=(e)=>{
+    const file = e.target.files[0];
 
-e.preventDefault();
+    if(!file) return;
 
-if(e.deltaY<0){
+    const reader = new FileReader();
 
-scale+=0.05;
+    reader.onload = function(ev){
 
-}else{
+        photo.onload = function(){
 
-scale-=0.05;
+            photoWidth = photo.naturalWidth;
 
-}
+            photoHeight = photo.naturalHeight;
 
-if(scale<0.2)scale=0.2;
+            photo.style.display = "block";
 
-if(scale>5)scale=5;
+            autoFit();
 
-updateTransform();
+        }
 
-}
-// ===============================
-// DOWNLOAD
-// ===============================
+        photo.src = ev.target.result;
 
-const downloadBtn = document.getElementById("downloadBtn");
-
-downloadBtn.onclick = function () {
-
-    if (!photo.src) {
-        alert("Silakan upload foto terlebih dahulu.");
-        return;
     }
 
-    const canvas = document.getElementById("exportCanvas");
-    const ctx = canvas.getContext("2d");
+    reader.readAsDataURL(file);
+
+});
+
+
+// ======================
+// DRAG FOTO
+// ======================
+
+photo.addEventListener("mousedown", function(e){
+
+    dragging = true;
+
+    startX = e.clientX - posX;
+
+    startY = e.clientY - posY;
+
+    photo.style.cursor = "grabbing";
+
+});
+
+
+window.addEventListener("mouseup", function(){
+
+    dragging = false;
+
+    photo.style.cursor = "grab";
+
+});
+
+
+window.addEventListener("mousemove", function(e){
+
+    if(!dragging) return;
+
+    posX = e.clientX - startX;
+
+    posY = e.clientY - startY;
+
+    updateTransform();
+
+});
+
+
+// ======================
+// ZOOM MOUSE
+// ======================
+
+editor.addEventListener("wheel", function(e){
+
+    e.preventDefault();
+
+    if(photo.style.display=="none") return;
+
+    const zoomSpeed = 0.08;
+
+    if(e.deltaY<0){
+
+        scale += zoomSpeed;
+
+    }else{
+
+        scale -= zoomSpeed;
+
+    }
+
+    if(scale<0.15) scale=0.15;
+
+    if(scale>8) scale=8;
+
+    updateTransform();
+
+});
+// ======================
+// DOWNLOAD PNG
+// ======================
+
+downloadBtn.addEventListener("click", function(){
+
+    if(photo.style.display=="none"){
+
+        alert("Silakan upload foto terlebih dahulu.");
+
+        return;
+
+    }
 
     // Bersihkan canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0,0,1280,1280);
+
+    // Ukuran editor yang tampil di browser
+    const editorWidth = editor.clientWidth;
+    const editorHeight = editor.clientHeight;
+
+    // Rasio editor ke canvas export
+    const ratioX = 1280 / editorWidth;
+    const ratioY = 1280 / editorHeight;
+
+    // Hitung ukuran foto sesuai preview
+    const drawWidth = photoWidth * scale * ratioX;
+    const drawHeight = photoHeight * scale * ratioY;
+
+    // Hitung posisi tengah editor
+    const centerX = editorWidth / 2;
+    const centerY = editorHeight / 2;
+
+    // Posisi foto pada canvas export
+    const drawX = (centerX + posX - (photoWidth * scale)/2) * ratioX;
+    const drawY = (centerY + posY - (photoHeight * scale)/2) * ratioY;
 
     // Gambar foto
-    const imgPhoto = new Image();
-    imgPhoto.crossOrigin = "anonymous";
+    const exportPhoto = new Image();
 
-    imgPhoto.onload = function () {
+    exportPhoto.onload = function(){
 
-        // Ambil ukuran editor
-        const editor = document.querySelector(".editor");
+        ctx.drawImage(
 
-        const scaleX = canvas.width / editor.clientWidth;
-        const scaleY = canvas.height / editor.clientHeight;
+            exportPhoto,
 
-        // Hitung posisi foto
-        const x = posX * scaleX;
-        const y = posY * scaleY;
+            drawX,
 
-        const w = editor.clientWidth * scale * scaleX;
-        const h = editor.clientHeight * scale * scaleY;
+            drawY,
 
-        ctx.drawImage(imgPhoto, x, y, w, h);
+            drawWidth,
+
+            drawHeight
+
+        );
 
         // Gambar frame di atas foto
-        const frameImg = new Image();
+        const exportFrame = new Image();
 
-        frameImg.onload = function () {
+        exportFrame.onload = function(){
 
-            ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+            ctx.drawImage(
+
+                exportFrame,
+
+                0,
+
+                0,
+
+                1280,
+
+                1280
+
+            );
 
             // Download
             const link = document.createElement("a");
 
             link.download = "Twibbon_MPLS_SMPN27_2026.png";
 
-            link.href = canvas.toDataURL("image/png");
+            link.href = exportCanvas.toDataURL("image/png");
 
             link.click();
 
         }
 
-        frameImg.src = "assets/twibbon.png";
+        exportFrame.src = "assets/twibbon.png";
 
     }
 
-    imgPhoto.src = photo.src;
+    exportPhoto.src = photo.src;
 
-}
+});
