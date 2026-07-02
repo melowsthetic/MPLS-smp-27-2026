@@ -10,7 +10,9 @@
 
 const upload = document.getElementById("upload");
 const uploadBtn = document.getElementById("uploadBtn");
-const downloadBtn = document.getElementById("downloadBtn");
+const downloadBtn=document.getElementById("downloadBtn");
+
+const copyBtn=document.getElementById("copyBtn");
 
 const photo = document.getElementById("photo");
 const frame = document.getElementById("frame");
@@ -287,5 +289,50 @@ downloadBtn.addEventListener("click", function(){
     }
 
     exportPhoto.src = photo.src;
+
+});
+// ======================
+// COPY CAPTION
+// ======================
+
+copyBtn.addEventListener("click", async function(){
+
+const caption=`🎉 HALO, TEMAN BARU! 🎉
+
+Perkenalkan Nama Saya ___________
+
+Dengan bangga saya siap menjadi bagian dari keluarga besar SMP Negeri 27.
+
+📚 Siap belajar.
+🤝 Siap berteman.
+🌟 Siap berprestasi.
+💙 Siap mengikuti MPLS Ramah 2026 dengan semangat, disiplin, dan saling menghargai.
+
+Mari memulai perjalanan baru di sekolah yang Unggul dalam Adab dan Ilmu.
+
+.
+
+.
+
+#MPLSRamah2026
+#MPLS
+#SMPNegeri27Bpn
+#SiswaBaru
+#SekolahRamah
+#SekolahAntiPerundungan
+#GenerasiBerkarakter
+#SpandujuUnggulDalamAdabDanIlmu`;
+
+try{
+
+await navigator.clipboard.writeText(caption);
+
+alert("✅ Caption berhasil disalin.\n\nSilakan paste ke Instagram.");
+
+}catch(e){
+
+alert("Browser tidak mengizinkan menyalin otomatis.");
+
+}
 
 });
