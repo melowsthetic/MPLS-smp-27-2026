@@ -246,3 +246,97 @@ color:white;
 font-weight:bold;
 
 }
+/* ===========================
+   LAYOUT 3 KOLOM
+=========================== */
+
+.container{
+
+    width:1400px;
+    max-width:95%;
+
+}
+
+.main-layout{
+
+    display:flex;
+    gap:25px;
+    align-items:flex-start;
+    margin-top:20px;
+
+}
+
+.left-panel{
+
+    width:300px;
+
+}
+
+.center-panel{
+
+    flex:1;
+
+}
+
+.right-panel{
+
+    width:260px;
+
+}
+
+.left-panel,
+.right-panel{
+
+    background:#fff;
+    padding:18px;
+    border-radius:18px;
+    box-shadow:0 6px 20px rgba(0,0,0,.08);
+
+}
+
+.left-panel h3,
+.right-panel h3{
+
+    margin-bottom:15px;
+    text-align:center;
+    color:#0b8dff;
+
+}
+
+.ig-button{
+
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    background:#E1306C;
+    color:white;
+    padding:12px;
+    border-radius:12px;
+    margin-top:15px;
+    font-weight:bold;
+
+}
+
+.ig-button:hover{
+
+    background:#C2185B;
+
+}
+
+@media(max-width:1000px){
+
+.main-layout{
+
+    flex-direction:column;
+
+}
+
+.left-panel,
+.right-panel,
+.center-panel{
+
+    width:100%;
+
+}
+
+}
