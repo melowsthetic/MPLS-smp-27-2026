@@ -11,7 +11,9 @@
 const upload = document.getElementById("upload");
 const uploadBtn = document.getElementById("uploadBtn");
 const downloadBtn=document.getElementById("downloadBtn");
-
+const musicBtn = document.getElementById("musicBtn");
+const bgMusic = document.getElementById("bgMusic");
+const waBtn = document.getElementById("waBtn");
 const copyBtn=document.getElementById("copyBtn");
 
 const photo = document.getElementById("photo");
@@ -383,5 +385,47 @@ try {
     alert("Browser tidak mengizinkan menyalin otomatis.");
 
 }
+
+});
+// ======================
+// BACKGROUND MUSIC
+// ======================
+
+let playing = false;
+
+musicBtn.addEventListener("click", function(){
+
+    if(!playing){
+
+        bgMusic.play();
+
+        musicBtn.innerHTML = "⏸ Hentikan Musik";
+
+        playing = true;
+
+    }else{
+
+        bgMusic.pause();
+
+        musicBtn.innerHTML = "🎵 Putar Musik";
+
+        playing = false;
+
+    }
+
+});
+// ======================
+// JOIN WHATSAPP
+// ======================
+
+waBtn.addEventListener("click", function(){
+
+    window.open(
+
+        "https://chat.whatsapp.com/KFSiapywGf119iNbeWLWUc",
+
+        "_blank"
+
+    );
 
 });
