@@ -343,3 +343,46 @@ font-weight:bold;
 .join-box{
     display:none;
 }
+.frame-download{
+
+    margin-top:25px;
+    background:#fff;
+    border-radius:18px;
+    padding:18px;
+    text-align:center;
+    box-shadow:0 6px 20px rgba(0,0,0,.08);
+
+}
+
+.frame-download h3{
+
+    color:#0b8dff;
+    margin-bottom:15px;
+
+}
+
+.frame-preview{
+
+    width:100%;
+    border-radius:15px;
+    margin-bottom:15px;
+
+}
+
+.download-frame-btn{
+
+    display:inline-block;
+    background:#0b8dff;
+    color:#fff;
+    padding:12px 22px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:bold;
+
+}
+
+.download-frame-btn:hover{
+
+    background:#0070d4;
+
+}
